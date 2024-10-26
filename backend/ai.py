@@ -71,8 +71,8 @@ class WatsonXAI:
 
         documents = []
         # HANDLE VECTOR FILES
-        filenames = ['./documents/prepare.pdf', './documents/fema-alerts.pdf', './documents/FL-emergency.pdf', './documents/pets.pdf', ]
-
+        documents_dir = './documents'
+        filenames = [os.path.join(documents_dir, f) for f in os.listdir(documents_dir) if os.path.isfile(os.path.join(documents_dir, f))]
         for (i, filename) in enumerate(filenames):
         # Load and process documents
             loader = PyPDFLoader(filename)
