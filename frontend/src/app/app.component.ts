@@ -14,7 +14,7 @@ import { Aura } from 'primeng/themes/aura';
 })
 export class AppComponent {
   title = 'frontend';
-  
+
   constructor(private primengConfig: PrimeNGConfig) {
     this.primengConfig.theme.set({ preset: Aura });
   }
