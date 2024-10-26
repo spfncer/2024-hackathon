@@ -56,6 +56,7 @@ async def get_shelters(address: str, num_results: int):
         )
 @app.get("/query/{query_string}")
 def ai_request(query_string: str):
+    logger.info(f"request / endpoint!")
     response = watson.query(query_string)
     response_array = response.split("\n")
     for (i, res) in enumerate(response_array):
