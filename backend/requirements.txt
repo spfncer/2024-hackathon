@@ -1,3 +1,12 @@
 fastapi[standard]
 uvicorn
+ibm-watsonx-ai
+python-dotenv
+langchain
+chromadb
+pydantic
+sqlalchemy
+langchain-ibm
+langchain_community
+pypdf
 geopy

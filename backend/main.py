@@ -5,19 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 import logging
 
+from ai import WatsonXAI
 from EvacZoneCall import FloridaEmergencyFinder
 
 logger = logging.getLogger(__name__)
-app = FastAPI()
 
-origins = ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = FastAPI()
+watson = WatsonXAI()
+
 
 @app.get("/")
 def read_root():
@@ -59,3 +54,10 @@ async def get_shelters(address: str, num_results: int):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Could not complete request",
         )
+@app.get("/query/{query_string}")
+def ai_request(query_string: str):
+    response = watson.query(query_string)
+    response_array = response.split("\n")
+    for (i, res) in enumerate(response_array):
+        response_array[i] = res.strip().replace("- ", "")
+    return {"response": response_array}
