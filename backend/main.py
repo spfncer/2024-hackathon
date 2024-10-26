@@ -1,6 +1,7 @@
 from typing import Union
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 import logging
 
@@ -9,6 +10,14 @@ from EvacZoneCall import FloridaEmergencyFinder
 logger = logging.getLogger(__name__)
 app = FastAPI()
 
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():

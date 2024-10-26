@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -17,6 +17,9 @@ import { Validators } from '@angular/forms';
 
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { httpSignal } from '../../utils/httpSignal';
+import { HttpClient } from '@angular/common/http';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'input-page',
@@ -62,8 +65,16 @@ export class InputPage {
     { name: 'Walk', value: 'Walk' }
   ];
 
+  address = signal('');
 
-  constructor(private formBuilder: FormBuilder) {
+  test = httpSignal(() => {
+    this.address(); // this here just for testing purposes
+    return this.httpClient.get<any>("http://localhost:8000/", {
+
+    });
+  });
+
+  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private router: Router) {
     this.profileForm = this.formBuilder.group({
       address: ['', Validators.required],
       residence_type: ['House', Validators.required],
@@ -82,10 +93,41 @@ export class InputPage {
       large_pets: [Number(0), [Validators.required, Validators.min(0), Validators.max(100)]],
       medication: [Boolean(true), Validators.required],
       equipment: [Boolean(true), Validators.required]
-    })
+    });
+
+    effect(() => {
+      console.log(this.test());
+    });
   }
 
   onSubmit() {
-    // TODO: Grab the values out of the forms and run a request using the service...
+    if (!this.profileForm.valid) {
+
+    }
+
+    if (!this.evacuationDataForm.valid) {
+
+    }
+
+    if (!this.miscDataForm.valid) {
+
+    }
+
+    const navigationExtras: NavigationExtras = {
+      state: {
+        address: this.profileForm.value.address,
+        residence_type: this.profileForm.value.residence_type,
+        number_people: this.profileForm.value.number_people,
+        outside_location: this.evacuationDataForm.value.outside_location,
+        outside_hotel: this.evacuationDataForm.value.outside_hotel,
+        travel_mode: this.evacuationDataForm.value.travel_mode,
+        small_pets: this.miscDataForm.value.small_pets,
+        medium_pets: this.miscDataForm.value.medium_pets,
+        large_pets: this.miscDataForm.value.large_pets,
+        medication: this.miscDataForm.value.medication,
+        equipment: this.miscDataForm.value.equipment
+      }
+    };
+    // this.router.navigate([], navigationExtras); // TODO: get URL setup here
   }
 }
