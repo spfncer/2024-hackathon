@@ -101,31 +101,19 @@ export class InputPage {
   }
 
   onSubmit() {
-    if (!this.profileForm.valid) {
-
-    }
-
-    if (!this.evacuationDataForm.valid) {
-
-    }
-
-    if (!this.miscDataForm.valid) {
-
-    }
-
     const navigationExtras: NavigationExtras = {
       state: {
-        address: this.profileForm.value.address,
-        residence_type: this.profileForm.value.residence_type,
-        number_people: this.profileForm.value.number_people,
-        outside_location: this.evacuationDataForm.value.outside_location,
-        outside_hotel: this.evacuationDataForm.value.outside_hotel,
-        travel_mode: this.evacuationDataForm.value.travel_mode,
-        small_pets: this.miscDataForm.value.small_pets,
-        medium_pets: this.miscDataForm.value.medium_pets,
-        large_pets: this.miscDataForm.value.large_pets,
-        medication: this.miscDataForm.value.medication,
-        equipment: this.miscDataForm.value.equipment
+        address: this.profileForm.value.address!,
+        residence_type: this.profileForm.value.residence_type!,
+        number_people: this.profileForm.value.number_people!,
+        outside_location: this.evacuationDataForm.value.outside_location!,
+        outside_hotel: this.evacuationDataForm.value.outside_hotel!,
+        travel_mode: this.evacuationDataForm.value.travel_mode!,
+        small_pets: this.miscDataForm.value.small_pets!,
+        medium_pets: this.miscDataForm.value.medium_pets!,
+        large_pets: this.miscDataForm.value.large_pets!,
+        medication: this.miscDataForm.value.medication!,
+        equipment: this.miscDataForm.value.equipment!
       }
     };
     // this.router.navigate([], navigationExtras); // TODO: get URL setup here
