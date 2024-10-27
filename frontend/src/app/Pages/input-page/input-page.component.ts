@@ -42,57 +42,71 @@ import { NavigationExtras, Router } from '@angular/router';
     ReactiveFormsModule,
     CommonModule,
     InputGroupModule,
-    InputGroupAddonModule
-  ]
+    InputGroupAddonModule,
+  ],
 })
 export class InputPage {
-  activeStep: number = 1
+  activeStep: number = 1;
 
   // 3 form groups, one per section
-  profileForm
-  evacuationDataForm
-  miscDataForm
+  profileForm;
+  evacuationDataForm;
+  miscDataForm;
 
   residenceTypeOptions: any[] = [
     { name: 'House', value: 'House' },
     { name: 'Apartment', value: 'Apartment' },
-    { name: 'Dorm', value: 'Dorm' }
+    { name: 'Dorm', value: 'Dorm' },
   ];
 
   travelOptions: any[] = [
     { name: 'Car', value: 'Car' },
     { name: 'Bus', value: 'Bus' },
-    { name: 'Walk', value: 'Walk' }
+    { name: 'Walk', value: 'Walk' },
   ];
 
   address = signal('');
 
   test = httpSignal(() => {
     this.address(); // this here just for testing purposes
-    return this.httpClient.get<any>("http://localhost:8000/", {
-
-    });
+    return this.httpClient.get<any>('http://localhost:8000/', {});
   });
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private httpClient: HttpClient,
+    private router: Router
+  ) {
     this.profileForm = this.formBuilder.group({
       address: ['', Validators.required],
       residence_type: ['House', Validators.required],
-      number_people: [Number(0), [Validators.required, Validators.min(0), Validators.max(100)]]
+      number_people: [
+        Number(0),
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
     });
 
     this.evacuationDataForm = this.formBuilder.group({
       outside_location: [Boolean(true), Validators.required],
       outside_hotel: [Boolean(true)],
-      travel_mode: ['Car', Validators.required]
+      travel_mode: ['Car', Validators.required],
     });
 
     this.miscDataForm = this.formBuilder.group({
-      small_pets: [Number(0), [Validators.required, Validators.min(0), Validators.max(100)]],
-      medium_pets: [Number(0), [Validators.required, Validators.min(0), Validators.max(100)]],
-      large_pets: [Number(0), [Validators.required, Validators.min(0), Validators.max(100)]],
+      small_pets: [
+        Number(0),
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
+      medium_pets: [
+        Number(0),
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
+      large_pets: [
+        Number(0),
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
       medication: [Boolean(true), Validators.required],
-      equipment: [Boolean(true), Validators.required]
+      equipment: [Boolean(true), Validators.required],
     });
 
     effect(() => {
@@ -113,9 +127,9 @@ export class InputPage {
         medium_pets: this.miscDataForm.value.medium_pets!,
         large_pets: this.miscDataForm.value.large_pets!,
         medication: this.miscDataForm.value.medication!,
-        equipment: this.miscDataForm.value.equipment!
-      }
+        equipment: this.miscDataForm.value.equipment!,
+      },
     };
-    // this.router.navigate([], navigationExtras); // TODO: get URL setup here
+    this.router.navigate(['/output'], navigationExtras); // TODO: get URL setup here
   }
 }

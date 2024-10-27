@@ -9,3 +9,10 @@ body {
     padding: 0;
     font-family: "Poppins", sans-serif;
 }
+
+.justify-center {
+    justify-content: center;
+}
+.align-center {
+    align-items: center;
+}
