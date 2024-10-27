@@ -4,13 +4,14 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { httpSignal } from '../../utils/httpSignal';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SparkleYourLifeComponent } from '../../components/sparkle-your-life/sparkle-your-life.component';
 
 @Component({
   selector: 'output-page',
   templateUrl: './output-page.component.html',
   styleUrls: ['./output-page.component.css'],
   standalone: true,
-  imports: [CardModule, ProgressSpinnerModule],
+  imports: [CardModule, ProgressSpinnerModule, SparkleYourLifeComponent],
 })
 export class OutputPage {
   state = signal({});
@@ -54,7 +55,7 @@ export class OutputPage {
       this.state.set(navigation.extras.state);
     }
     effect(() => {
-      console.log(this.state());
+      console.log(this.determinations());
     });
   }
 }

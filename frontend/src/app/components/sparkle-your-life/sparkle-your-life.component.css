@@ -1,0 +1,27 @@
+div {
+    min-height: 200px;
+    min-width: 200px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+i {
+    font-size: 4em;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+    0% {
+        color: var(--p-gray-200)
+    }
+    50% {
+        color: var(--p-gray-400)
+    }
+    100% {
+        color: var(--p-gray-200)
+    }
+}
