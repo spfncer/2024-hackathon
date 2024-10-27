@@ -32,7 +32,7 @@ npm i
 cd backend 
 pip install -r requirements.txt
 ```
-5. Create a backend/documents directory, and populate this folder with PDF documents about hurrican preparedness. For our demo, we used documents created by the State of Florida.
+5. Create a backend/documents directory, and populate this folder with PDF documents about hurricane preparedness. For our demo, we used documents created by the State of Florida.
 > [!NOTE] 
 > Depending on how your pip and python versions are installed, you may need to modify the pip install command to work for your installation. 
 6. Start the backend server utilizing the following command: 
