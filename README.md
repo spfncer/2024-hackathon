@@ -103,13 +103,11 @@ Our developers learned a variety of skills, including but not limited to:
     - Signals
     - Standalone Components
     - Routing
-
 2. watsonx.ai 
     - Navigating the Prompt Lab
     - Testing different models
     - Generating API keys
     - Using watsonx.ai models with LangChain
-
 3. External API usage
     - Google Maps API
     - Google Places API
