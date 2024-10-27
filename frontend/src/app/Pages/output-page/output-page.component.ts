@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { httpSignal } from '../../utils/httpSignal';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SparkleYourLifeComponent } from '../../components/sparkle-your-life/sparkle-your-life.component';
+import { YoutubePlayerExample } from '../../components/youtubeplayer/youtubeplayer.component';
 import { of } from 'rxjs';
 import {
   GoogleMap,
@@ -33,7 +34,8 @@ import {
     MapMarker,
     MapAdvancedMarker,
     MapInfoWindow,
-  ],
+    YoutubePlayerExample
+],
 })
 export class OutputPage {
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;

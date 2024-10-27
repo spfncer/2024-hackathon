@@ -26,9 +26,9 @@
 
 .first-level {
     display: grid;
-    grid-template-columns: 60% 38%;
+    grid-template-columns: 58% 38%;
     row-gap: 1.25em;
-    column-gap: 1.25em;
+    column-gap: 2em;
 }
 
 @media screen and (max-width: 800px) {
