@@ -1,11 +1,9 @@
 import { Injectable, signal } from "@angular/core";
 
-@Injectable({
-    providedIn: 'root'
-})
-export class WindowService {
-    get nativeWindow(): Window { return window; };
-}
+/**
+ * Gets a reference to the browser's window api
+ */
+declare var window: Window;
 
 /**
  * A service which allows components to view internet connection status according to the browser. 
@@ -20,7 +18,7 @@ export class InternetConnectionService {
     /**
      * Private signal used to montior / update internet connection status based on browser events.
      */
-    private isOnlineSignal = signal<boolean>(true);
+    private isOnlineSignal = signal<boolean>(window.navigator.onLine);
 
     /**
      * Public readonly signal which is used to monitor internet connection status.
@@ -30,8 +28,8 @@ export class InternetConnectionService {
     /**
      * Initializes the event listeners for the service.
      */
-    constructor(private windowService: WindowService) {
-        this.windowService.nativeWindow.addEventListener('online', () => this.isOnlineSignal.set(true));
-        this.windowService.nativeWindow.addEventListener('offline', () => this.isOnlineSignal.set(false));
+    constructor() {
+        window.addEventListener('online', () => this.isOnlineSignal.set(true));
+        window.addEventListener('offline', () => this.isOnlineSignal.set(false));
     }
 }
