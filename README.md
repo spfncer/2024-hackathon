@@ -10,7 +10,7 @@ Our EvacUGator app works by first asking the user relevant questions such as whe
 
 ## Usage Instructions
 
-> [!NOTE] The application is not hosted in a website, due in part to WatsonAI access being revoked and the GoogleMaps API key being revoked once the hackathon window is over. To run, you must start the front and backends locally.
+> [!WARNING] The application is not hosted in a website, due in part to WatsonAI access being revoked and the GoogleMaps API key being revoked once the hackathon window is over. To run, you must start the front and backends locally.
 
 To setup & run this application, perform the following steps:
 1. Set up a Google Maps API key by following the instructions here (https://developers.google.com/maps/get-started), and modifying line 14 of the `frontend/src/index.html` file to use your key instead of the provided one. 
@@ -25,7 +25,7 @@ npm i
 cd backend 
 pip install -r requirements.txt
 ``` 
-> [!NOTE] Depending on how your pip and python versions are installed, you may need to modify the pip install command to work for your installation. 
+> [!WARNING] Depending on how your pip and python versions are installed, you may need to modify the pip install command to work for your installation. 
 5. Start the backend server utilizing the following command: 
 ```
 cd backend 
