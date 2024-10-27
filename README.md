@@ -15,10 +15,10 @@ Our EvacUGator app works by first asking the user relevant questions such as whe
 
 To setup & run this application, perform the following steps:
 1. Set up a Google Maps API key by following the instructions here (https://developers.google.com/maps/get-started), and modifying line 14 of the `frontend/src/index.html` file to use your key instead of the provided one. 
-> [!CRITICAL] 
+> [!CAUTION] 
 > DO NOT SHARE YOUR API KEY WITH ANYONE!
 2. Set up a WatsonX API key by following the instructions from IBM and placing it in a `backend/.env` file (which you must create) in a similar format to the `sample.env` file. 
-> [!CRITICAL] 
+> [!CAUTION] 
 > DO NOT SHARE YOUR API KEY WITH ANYONE!
 3. Download frontend dependencies with the following commands: 
 ```
