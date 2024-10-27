@@ -91,7 +91,7 @@ We are proud that we managed to integrate smoothly with so many external data so
 
 Furthermore, the fact that we were able to leverage the beta version of PrimeNG to provide app customization options and a smooth user interface is something we are proud of, especially since only one developer had utilized PrimeNG in the past (and on an older version of the library too).
 
-Additionally, all of our frontend developers learned new skills relating to Angular, including the new Angular signals, standalone components, and angular application routing. 
+Additionally, all of our frontend developers learned new skills relating to Angular, including the new Angular signals, standalone components, and angular application routing. Furthermore, the team was able to support both mobile and desktop experiences with Evacugator. 
 
 Finally, we are proud that we managed to set up the watsonx.ai model to output a relatively detailed and relevant set of hurricane preparation steps, especially given the wide range of input parameters we are feeding to the model. Training the AI on the set of PDF files and then having the AI generate non-gibberish output is something which took the better part of 8 hours to achieve, and was well worth it. 
 
