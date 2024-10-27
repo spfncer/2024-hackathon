@@ -8,10 +8,6 @@
     flex: 1 1 auto;
 }
 
-router-outlet {
-    height: 100%;
-}
-
 app-navbar {
     flex: 0 1 auto;
 }
