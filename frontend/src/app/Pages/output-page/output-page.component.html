@@ -1,8 +1,8 @@
 <p-card [style]="{ width: '100%', height: '100%' }" class="flex justify-center">
-  <p-card id="evac-status" [class]="determinations()?.status">
+  <p-card id="evac-status" [class]="status()?.status">
     <div class="evac-grid">
       <div class="flex justify-center align-center">
-        @if (determinations()){
+        @if (status()){
         <i class="pi pi-info-circle text-white" style="font-size: 4em"></i>
         } @else {
         <p-progress-spinner ariaLabel="loading"></p-progress-spinner>
@@ -21,7 +21,7 @@
     <p-card class="output-card">
       <h2 class="text-center">Preparation Guidance</h2>
       <ul>
-        @for (bullet of determinations()?.advice; track bullet) {
+        @for (bullet of guidance()?.advice; track bullet) {
         <li>{{ bullet }}</li>
         } @empty {
         <sparkle-your-life></sparkle-your-life>

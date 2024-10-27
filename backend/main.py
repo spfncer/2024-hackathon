@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 from json import JSONDecoder, JSONEncoder
 from fastapi.encoders import jsonable_encoder
+from RequestUtils import ai_structured_response
 
 from ai import WatsonXAI
 from EvacZoneCall import FloridaEmergencyFinder
@@ -38,7 +39,6 @@ def read_item(item_id: int, q: Union[str, None] = None):
     logger.info(f"request / endpoint!")
     return {"item_id": item_id, "q": q}
 
-@app.get('/evacuation_zone')
 def get_evacuation_zone(address: str):
     logger.info(f"request / endpoint!")
 
@@ -74,83 +74,27 @@ def ai_request(query_string: str):
         response_array[i] = res.strip().replace("- ", "")
     return response_array
 
-def ai_structured_response(user_data:dict, evac_zone:str, status:str, plan:str, backup:str, state_of_emergency:bool): 
+def __determine_status(zone:str):
     """
-    Builds a structured response for the AI to process.
-
-    Parameters
-    ----------
-    user_data : dict
-        The data from the form.
-    evac_zone : int
-        The evacuation zone of the user
-    status : str
-        The plan of action for the user. "home", "hotel", "family", or "shelter"
-    backup : str
-        The backup plan of action for the user. "hotel", "family", or "shelter"
-    state_of_emergency : bool
-        Whether a state of emergency has been declared.
-
-    Returns
-    -------
-    str
-        The structured response for the AI to process.
+    Determines the immediate action the user should prepare to take
+    For demo purposes, this just switches over the evac zone
+    IRL this would need to consider hurricane track and evacuation orders
     """
-    residencestr = ''
-    statusstr = ''
-    planstr = ''
-    backupstr = ''
-    petsstr = ''
-    prescriptionstr = ''
-    medicalstr = ''
-    emergencystr = "A state of emergency has been declared." if state_of_emergency else "A state of emergency has not been declared."
-    match user_data.get("residence_type"):
-        case "House":
-            residencestr = "lives in a single family home"
-        case "Apartment":
-            residencestr = "lives in an apartment"
-        case "Mobile Home":
-            residencestr = "lives in a mobile home"
-        case "Dormitory":
-            residencestr = "lives in a dormitory"
-        case "Homeless":
-            residencestr = "is homeless"
-        case "Other":
-            residencestr = "lives in an alternate type of residence"
-    match status:
-        case "okay":
-            statusstr = "not under evacuation"
-        case "be-prepared":
-            statusstr = "under an evacuation advisory"
-        case "evacuate":
-            statusstr = "under a mandatory evacuation"
-    match plan:
-        case "home":
-            planstr = "shelter in place"
-        case "hotel":
-            planstr = f"evacuate to a hotel via {user_data.get('travel_mode')}"
-        case "family":
-            planstr = f"evacuate to a family member's home via {user_data.get('travel_mode')}"
-        case "shelter":
-            planstr = f"evacuate to a shelter via {user_data.get('travel_mode')}"
-    match backup:
-        case "hotel":
-            backupstr = f", but may evacuate via {user_data.get('travel_mode')} to a hotel if conditions worsen"
-        case "family":
-            backupstr = f", but may evacuate via {user_data.get('travel_mode')} to a family member's home if conditions worsen"
-        case "shelter":
-            backupstr = f", but may evacuate via {user_data.get('travel_mode')} to a shelter if conditions worsen"
-        case _:
-            backupstr = ""
-    if (user_data.get("small_pets") or user_data.get("medium_pets") or user_data.get("large_pets")):
-        petsstr = f"The user has {user_data.get('small_pets')} small pets, {user_data.get('medium_pets')} medium pets, and {user_data.get('large_pets')} large pets."
-    if (user_data.get("medication") == True):
-        prescriptionstr = "The user takes prescription medications."
-    if (user_data.get("equipment") == True):
-        medicalstr = "The user needs specialized medical equipment."
-    
-    query = f"The user has a household size of {user_data.get('number_people')}, and {residencestr}. They live in evacuation zone {evac_zone}, which is {statusstr}. The user will {planstr}{backupstr}. {emergencystr} {petsstr} {prescriptionstr} {medicalstr}"
-    return query
+    if (zone == "A" or zone == "B"):
+        return "evacuate"
+    if (zone == "C" or zone == "D"):
+        return "be_prepared"
+    return "okay"
+
+@app.get("/status/{address}")
+async def get_status(address: str):
+    evac_zone = get_evacuation_zone(address)
+    istatus = __determine_status(evac_zone)
+    response = {
+        "status": istatus,
+        "zone": evac_zone
+    }
+    return jsonable_encoder(response)
 
 @app.get("/results/{json_string}")
 async def results(json_string: str):
@@ -158,9 +102,17 @@ async def results(json_string: str):
     obj = decoder.decode(json_string)
     evac_zone = get_evacuation_zone(obj.get('address'))
     ai_req = ai_structured_response(obj, evac_zone, "okay", "home", "", True)
-    print(ai_req)
     response = {
-        "status": "okay", # "okay" or "be-prepared" or "evacuate"
         "advice": ai_request(ai_req),
+    }
+    return jsonable_encoder(response)
+
+@app.get("/hotels/{address}")
+async def find_hotels(address:str):
+    coords = finder.geocode_address(address)
+    #coords = (coords[0] + 0.43, coords[1]) # go ~30 miles north, IRL would need to compute based on cone
+    hotels = finder.find_nearby_hotels(coords)
+    response = {
+        "hotels": hotels
     }
     return jsonable_encoder(response)
