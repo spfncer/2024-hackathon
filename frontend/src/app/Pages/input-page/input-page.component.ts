@@ -14,7 +14,8 @@ import { FormsModule, FormBuilder } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Validators } from '@angular/forms';
-
+import { YouTubePlayerModule } from '@angular/youtube-player';
+import { YoutubePlayerExample } from '../../components/youtubeplayer/youtubeplayer.component';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { httpSignal } from '../../utils/httpSignal';
@@ -42,7 +43,9 @@ import { NavigationExtras, Router } from '@angular/router';
     ReactiveFormsModule,
     CommonModule,
     InputGroupModule,
-    InputGroupAddonModule
+    InputGroupAddonModule,
+    YouTubePlayerModule,
+    YoutubePlayerExample
   ]
 })
 export class InputPage {
