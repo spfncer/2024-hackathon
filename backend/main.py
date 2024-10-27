@@ -1,9 +1,9 @@
 from typing import Union
+import logging
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
-import logging
 from json import JSONDecoder, JSONEncoder
 from fastapi.encoders import jsonable_encoder
 
@@ -17,7 +17,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200", "http://127.0.0.1"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -25,6 +25,7 @@ app.add_middleware(
 watson = WatsonXAI()
 decoder = JSONDecoder()
 encoder = JSONEncoder()
+finder = FloridaEmergencyFinder()
 
 @app.get("/")
 def read_root():
@@ -38,9 +39,8 @@ def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
 @app.get('/evacuation_zone')
-async def get_evacuation_zone(address: str):
+def get_evacuation_zone(address: str):
     logger.info(f"request / endpoint!")
-    finder = FloridaEmergencyFinder()
 
     try:
         user_coords = finder.geocode_address(address)
@@ -56,7 +56,6 @@ async def get_evacuation_zone(address: str):
 @app.get('/shelters')
 async def get_shelters(address: str, num_results: int):
     logger.info(f"request / endpoint!")
-    finder = FloridaEmergencyFinder()
 
     try:
         return finder.find_nearest_locations(address, num_results)
@@ -75,7 +74,7 @@ def ai_request(query_string: str):
         response_array[i] = res.strip().replace("- ", "")
     return response_array
 
-def ai_structured_response(user_data:dict, evac_zone:int, status:str, plan:str, backup:str, state_of_emergency:bool): 
+def ai_structured_response(user_data:dict, evac_zone:str, status:str, plan:str, backup:str, state_of_emergency:bool): 
     """
     Builds a structured response for the AI to process.
 
@@ -154,11 +153,14 @@ def ai_structured_response(user_data:dict, evac_zone:int, status:str, plan:str, 
     return query
 
 @app.get("/results/{json_string}")
-def results(json_string: str):
+async def results(json_string: str):
     logger.info(f"request / endpoint!")
     obj = decoder.decode(json_string)
+    evac_zone = get_evacuation_zone(obj.get('address'))
+    ai_req = ai_structured_response(obj, evac_zone, "okay", "home", "", True)
+    print(ai_req)
     response = {
         "status": "okay", # "okay" or "be-prepared" or "evacuate"
-        "advice": ai_request(ai_structured_response(obj, 1, "okay", "home", "", True)),
+        "advice": ai_request(ai_req),
     }
     return jsonable_encoder(response)
