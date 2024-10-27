@@ -112,6 +112,7 @@ Our developers learned a variety of skills, including but not limited to:
 
 3. External API usage
     - Google Maps API
+    - Google Places API
     - FEMA API
     - ArcGIS API
     - Overpass API
