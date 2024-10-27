@@ -18,6 +18,11 @@ export class AppComponent {
   title = 'frontend';
 
   constructor(private primengConfig: PrimeNGConfig) {
-    this.primengConfig.theme.set({ preset: Aura });
+    this.primengConfig.theme.set({
+      preset: Aura,
+      options: {
+        darkModeSelector: '.dark-mode'
+      }
+    });
   }
 }

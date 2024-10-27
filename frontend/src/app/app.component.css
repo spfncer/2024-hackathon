@@ -1,7 +1,9 @@
 :host {
     display: flex;
     flex-flow: column;
+    gap: 1em;
     height: 100%;
+    margin: 0.25em;
 }
 
 :host ::ng-deep router-outlet+* {
