@@ -2,11 +2,11 @@
 
 ## Inspiration
 
-As native Floridians, we have lived through numerous hurricanes throughout our lives. We have seen the tragedies that each new disaster causes firsthand. Additionally, from personal experience, we found that the people who don't evacuate tend to be people without the monetary ability or knowledge to. That is why we decided to use IBM's innovative AI technologies to try and help prevent the unnecessary loss of human life that inevitably results from these strong storms. To do this, we made an all-inclusive, easy to use app that is made to inform and assist people in evacuation zones on how to cheaply and efficiently get to safety.
+As native Floridians, we have lived through numerous hurricanes throughout our lives. We have seen the tragedies that each new disaster causes firsthand. Additionally, from personal experience, we found that the people who don't evacuate tend to be people without the monetary ability or knowledge to. That is why we decided to use IBM's innovative AI technologies to try and help prevent the unnecessary loss of human life that results from these strong storms. To do this, we made an all-inclusive, easy to use app that is made to inform and assist people in evacuation zones on how to cheaply and efficiently get to safety.
 
 ## What It Does
 
-Our Evacugator app works by first asking the user relevant questions such as where they live, how many people they live with, if they already have transportation and/or a shelter outside the storm's path, and if they have any special accommodations necessary for their survival through the storm. With the user information and real-time information about the path of the pertinent hurricane, our program will generate a user-specific evacuation plan. Plan and user information is then given to an LLM bot that utilizes publicly available documents on hurricane preparedness. Moreover, the AI will provide personalized guidance on how each user can prepare. Plans will include information such as the quickest route out of the hurricane's path, the possible impact of the disaster, the locations of hurricane shelters nearby, the availability of cheap hotels nearby, and, if necessary, the ability of free/cheap transportation out of the evacuation zone. Therefore, this would hopefully help the user gain the knowledge they need to safely escape the disaster.
+Our Evacugator app works by first asking the user relevant questions such as where they live, how many people they live with, if they already have transportation and/or a shelter outside the storm's path, and if they have any special accommodations necessary for their survival through the storm. With the user information and real-time information about the path of the pertinent hurricane, our program will generate a user-specific evacuation plan. Plan and user information is then given to an LLM that utilizes publicly available documents on hurricane preparedness. Moreover, the AI will provide personalized guidance on how each user can prepare. Plans will include information such as the quickest route out of the hurricane's path, the possible impact of the disaster, the locations of hurricane shelters nearby, the availability of cheap hotels nearby, and, if necessary, the ability of free/cheap transportation out of the evacuation zone. Therefore, this would hopefully help the user gain the knowledge they need to safely escape the disaster.
 
 Though we place emphasis on how end users will interact with Evacugator, the primary customer for Evacugator is governments. Evacugator seeks to provide local authorities with a direct line to reach citizens as part of orchestrating area evacuations. Though the results shown to users are highly individualistic, the goal for Evacugator is to provide citizens with a path to evcauate which aligns with coordinated evacuation efforts.
 
@@ -53,7 +53,7 @@ This project utilizes the client server architecture model, and consists of a fr
 We divided the work of developing the application into broad roles defined below:
 - Gabriel Aldous - Frontend developer, integration specialist
 - Benjamin Bryant - Frontend developer, web designer, external data source researcher
-- Spencer Fasulo - Backend developer, web designer, WatsonX AI engineer
+- Spencer Fasulo - Full-stack developer, web designer, WatsonX AI engineer
 - John Spurrier - Backend developer, external data source researcher
 - Jonathan Calderone - Presentation design, script design, management
 
@@ -83,7 +83,7 @@ FastAPI routes within `main.py` transform input from the frontend into usable fo
 In the watsonx.ai Prompt Lab, including documents to ground responses in was simple — but this did not translate into Python code easily. To make this key feature happen, we had to create a vector database in Python (using watsonx.ai embeddings), manually retrieve data from it, and inject that as context into the LLM. This proved a great learning exercise to better understand how LLMs can read data from contextual documents.
 
 ### Timing
-The goal for Evacugator is to aid government efforts in coordinating evacuation plans by reaching citizens directly in the event of a hurricane. But there are a large number of variables that need to be considered in making those decisions which we just did not have the time to implement in this short hackathon. Still, we are proud of what we were able to accomplish!
+The goal for Evacugator is to aid government efforts in coordinating evacuation plans by reaching citizens directly in the event of a hurricane. But there are a large number of variables that need to be considered in making those decisions which we just did not have the time to implement in this short hackathon. Still, we are proud of what we were able to accomplish — more on that below!
 
 ## Accomplishments that we're proud of
 
@@ -91,9 +91,9 @@ We are proud that we managed to integrate smoothly with so many external data so
 
 Furthermore, the fact that we were able to leverage the beta version of PrimeNG to provide app customization options and a smooth user interface is something we are proud of, especially since only one developer had utilized PrimeNG in the past (and on an older version of the library too).
 
-Additionally, all of our frontend developers learned new skills relating to Angular, including the new Angular signals, standalone components, and angular application routing. Furthermore, the team was able to support both mobile and desktop experiences with Evacugator. 
+Additionally, all of our frontend developers learned new skills relating to Angular, including the new Angular signals, standalone components, and Angular application routing. Furthermore, the team was able to support both mobile and desktop experiences with Evacugator. 
 
-Finally, we are proud that we managed to set up the watsonx.ai model to output a relatively detailed and relevant set of hurricane preparation steps, especially given the wide range of input parameters we are feeding to the model. Training the AI on the set of PDF files and then having the AI generate non-gibberish output is something which took the better part of 8 hours to achieve, and was well worth it. 
+Finally, we are proud that we managed to set up the watsonx.ai model to output a relatively detailed and relevant set of hurricane preparation steps, especially given the wide range of input parameters we are feeding to the model. Experimenting with different models and parameters, training the AI on the set of PDF files, and then having the AI generate non-gibberish output is something which took the better part of 8 hours to achieve, and was well worth it. 
 
 ## What We Learned
 
@@ -119,7 +119,7 @@ Our developers learned a variety of skills, including but not limited to:
 
 ## What's Next For Evacugator
 ### User-Facing Work
-To bring Evacugator to a real-world use case, more work needs to be done. User-facing features like identifying shelters, transportation options, and evacuation status (based on realtime hurricane data) remains to be implemented. 
+To bring Evacugator to a real-world use case, more work needs to be done. User-facing features like identifying shelters, transportation options, and evacuation status (based on realtime hurricane data) remain to be implemented. 
 ### Government Dashboard
 Since the primary audience for Evacugator is governments, work needs to be done to develop a portal where authorities can:
 - Activate/deactivate Evacugator service
