@@ -15,8 +15,19 @@
         <i class="pi pi-wifi"></i>
       </p-overlaybadge>
       }
-      <p-button [rounded]="true" [text]="true" [plain]="true" [icon]="isDarkMode ? 'pi pi-moon' : 'pi pi-sun'"
-        (click)="toggleDarkMode()" />
+      <p-button #popButton [rounded]="true" [text]="true" [plain]="true" [icon]="'pi pi-palette'"
+        (click)="colorMenuVisible = true" />
     </div>
   </ng-template>
 </p-menubar>
+
+<p-drawer header="Color Options" [(visible)]="colorMenuVisible" position="top" [style]="{'height': '100%'}"
+  styleClass="w-full">
+  <div class="flex flex-wrap gap-2">
+    <p-button *ngFor="let color of primaryColors; index as i; first as isFirst" [rounded]="true" [outlined]="false"
+      size="small" [style]="{'background': color.value, 'border': 'none'}" (click)="changePrimaryColor(color.name)" />
+  </div>
+  <p-divider />
+  <p-button [rounded]="true" [text]="true" [plain]="true" [icon]="isDarkMode ? 'pi pi-moon' : 'pi pi-sun'"
+    (click)="toggleDarkMode()" />
+</p-drawer>
