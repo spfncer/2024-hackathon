@@ -2,55 +2,27 @@
   <p-stepper [(value)]="activeStep" [linear]="true">
     <p-step-item [value]="1">
       <p-step>
-        <ng-template
-          #content
-          let-activateCallback="activateCallback"
-          let-value="value"
-        >
-          <p-button
-            icon="pi pi-home"
-            [rounded]="true"
-            [text]="true"
-            [raised]="true"
-            severity="secondary"
-          />
+        <ng-template #content let-activateCallback="activateCallback" let-value="value">
+          <p-button icon="pi pi-home" [rounded]="true" [text]="true" [raised]="true" />
         </ng-template>
       </p-step>
       <p-step-panel>
         <ng-template #content let-activateCallback="activateCallback">
           <div class="flex flex-col h-48">
-            <form
-              class="flex flex-column items-center gap-2"
-              [formGroup]="profileForm"
-            >
+            <form class="flex flex-column items-center gap-2" [formGroup]="profileForm">
               <p-floatlabel class="mt-2" variant="on">
-                <input
-                  pInputText
-                  id="address"
-                  formControlName="address"
-                  autocomplete="off"
-                />
+                <input pInputText id="address" formControlName="address" autocomplete="off" />
                 <label for="address">Address</label>
               </p-floatlabel>
 
               What is your residence type?
-              <p-selectbutton
-                [options]="residenceTypeOptions"
-                formControlName="residence_type"
-                optionLabel="name"
-                optionValue="value"
-              />
+              <p-selectbutton [options]="residenceTypeOptions" formControlName="residence_type" optionLabel="name"
+                optionValue="value" />
 
               How many people live there?
               <p-floatlabel variant="on">
-                <p-inputnumber
-                  inputId="number_people"
-                  formControlName="number_people"
-                  [min]="0"
-                  [max]="100"
-                  [showButtons]="true"
-                  buttonLayout="horizontal"
-                >
+                <p-inputnumber inputId="number_people" formControlName="number_people" [min]="0" [max]="100"
+                  [showButtons]="true" buttonLayout="horizontal">
                   <ng-template pTemplate="incrementbuttonicon">
                     <span class="pi pi-plus"></span>
                   </ng-template>
@@ -71,41 +43,20 @@
 
     <p-step-item [value]="2">
       <p-step>
-        <ng-template
-          #content
-          let-activateCallback="activateCallback"
-          let-value="value"
-        >
-          <p-button
-            icon="pi pi-car"
-            [rounded]="true"
-            [text]="true"
-            [raised]="true"
-            severity="secondary"
-          />
+        <ng-template #content let-activateCallback="activateCallback" let-value="value">
+          <p-button icon="pi pi-car" [rounded]="true" [text]="true" [raised]="true" />
         </ng-template>
       </p-step>
       <p-step-panel>
         <ng-template #content let-activateCallback="activateCallback">
           <div class="flex flex-col h-48">
-            <form
-              class="flex flex-column items-center gap-2"
-              [formGroup]="evacuationDataForm"
-            >
+            <form class="flex flex-column items-center gap-2" [formGroup]="evacuationDataForm">
               Do you have somewhere to go outside of the storm cone?
-              <p-togglebutton
-                formControlName="outside_location"
-                onLabel="Yes"
-                offLabel="No"
-              />
+              <p-togglebutton formControlName="outside_location" onLabel="Yes" offLabel="No" />
 
               @if (!evacuationDataForm.value.outside_location) { Can you travel
               to a hotel out of the cone?
-              <p-togglebutton
-                formControlName="outside_hotel"
-                onLabel="Yes"
-                offLabel="No"
-              />
+              <p-togglebutton formControlName="outside_hotel" onLabel="Yes" offLabel="No" />
               } How do you plan to travel?
               <p-selectbutton
                 [options]="travelOptions"
@@ -117,11 +68,7 @@
             </form>
           </div>
           <div class="flex pt-6 pb-3 gap-2">
-            <p-button
-              label="Back"
-              severity="secondary"
-              (onClick)="activateCallback(1)"
-            />
+            <p-button label="Back" severity="secondary" (onClick)="activateCallback(1)" />
             <p-button label="Next" (onClick)="activateCallback(3)" />
           </div>
         </ng-template>
@@ -130,37 +77,18 @@
 
     <p-step-item [value]="3">
       <p-step>
-        <ng-template
-          #content
-          let-activateCallback="activateCallback"
-          let-value="value"
-        >
-          <p-button
-            icon="pi pi-asterisk"
-            [rounded]="true"
-            [text]="true"
-            [raised]="true"
-            severity="secondary"
-          />
+        <ng-template #content let-activateCallback="activateCallback" let-value="value">
+          <p-button icon="pi pi-asterisk" [rounded]="true" [text]="true" [raised]="true" />
         </ng-template>
       </p-step>
       <p-step-panel>
         <ng-template #content let-activateCallback="activateCallback">
           <div class="flex flex-col h-48">
-            <form
-              class="flex flex-column items-center gap-2"
-              [formGroup]="miscDataForm"
-            >
+            <form class="flex flex-column items-center gap-2" [formGroup]="miscDataForm">
               How many pets do you have?
               <p-floatlabel variant="on">
-                <p-inputnumber
-                  inputId="small_pets"
-                  formControlName="small_pets"
-                  [min]="0"
-                  [max]="100"
-                  [showButtons]="true"
-                  buttonLayout="horizontal"
-                >
+                <p-inputnumber inputId="small_pets" formControlName="small_pets" [min]="0" [max]="100"
+                  [showButtons]="true" buttonLayout="horizontal">
                   <ng-template pTemplate="incrementbuttonicon">
                     <span class="pi pi-plus"></span>
                   </ng-template>
@@ -172,14 +100,8 @@
               </p-floatlabel>
 
               <p-floatlabel variant="on">
-                <p-inputnumber
-                  inputId="medium_pets"
-                  formControlName="medium_pets"
-                  [min]="0"
-                  [max]="100"
-                  [showButtons]="true"
-                  buttonLayout="horizontal"
-                >
+                <p-inputnumber inputId="medium_pets" formControlName="medium_pets" [min]="0" [max]="100"
+                  [showButtons]="true" buttonLayout="horizontal">
                   <ng-template pTemplate="incrementbuttonicon">
                     <span class="pi pi-plus"></span>
                   </ng-template>
@@ -191,14 +113,8 @@
               </p-floatlabel>
 
               <p-floatlabel variant="on">
-                <p-inputnumber
-                  inputId="large_pets"
-                  formControlName="large_pets"
-                  [min]="0"
-                  [max]="100"
-                  [showButtons]="true"
-                  buttonLayout="horizontal"
-                >
+                <p-inputnumber inputId="large_pets" formControlName="large_pets" [min]="0" [max]="100"
+                  [showButtons]="true" buttonLayout="horizontal">
                   <ng-template pTemplate="incrementbuttonicon">
                     <span class="pi pi-plus"></span>
                   </ng-template>
@@ -210,26 +126,14 @@
               </p-floatlabel>
 
               Do you take prescription medication?
-              <p-togglebutton
-                formControlName="medication"
-                onLabel="Yes"
-                offLabel="No"
-              />
+              <p-togglebutton formControlName="medication" onLabel="Yes" offLabel="No" />
 
               Do you need specialized medical equipment?
-              <p-togglebutton
-                formControlName="equipment"
-                onLabel="Yes"
-                offLabel="No"
-              />
+              <p-togglebutton formControlName="equipment" onLabel="Yes" offLabel="No" />
             </form>
           </div>
           <div class="flex pt-6 pb-3 gap-2">
-            <p-button
-              label="Back"
-              severity="secondary"
-              (onClick)="activateCallback(2)"
-            />
+            <p-button label="Back" severity="secondary" (onClick)="activateCallback(2)" />
             <p-button label="Submit" (onClick)="onSubmit()" />
           </div>
         </ng-template>

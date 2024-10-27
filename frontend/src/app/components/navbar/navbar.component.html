@@ -1,13 +1,33 @@
 <p-menubar>
   <ng-template pTemplate="start">
-    <p-avatar
-      class="p-overlay-badge mr-2"
-      image="Hackathon_Logo_1080x1080.png"
-      size="large"
-      shape="circle"
-    />
-    <span> Evacugator </span>
+    <div class="flex felx-column justify-center align-items-center gap-3">
+      <p-avatar class="p-overlay-badge mr-2" image="Hackathon_Logo_1080x1080.png" size="large" shape="circle" />
+      <span class="text-4xl font-bold sm:text2xl"> Evacugator </span>
+    </div>
   </ng-template>
 
-  <ng-template pTemplate="end"> </ng-template>
+  <ng-template pTemplate="end">
+    <div class="flex felx-column justify-center align-items-center gap-3">
+      @if (internetConnection.isOnline()) {
+      <i class="pi pi-wifi"></i>
+      } @else {
+      <p-overlaybadge badgeSize="small" value="!" severity="danger">
+        <i class="pi pi-wifi"></i>
+      </p-overlaybadge>
+      }
+      <p-button #popButton [rounded]="true" [text]="true" [plain]="true" [icon]="'pi pi-palette'"
+        (click)="colorMenuVisible = true" />
+    </div>
+  </ng-template>
 </p-menubar>
+
+<p-drawer header="Color Options" [(visible)]="colorMenuVisible" position="top" [style]="{'height': '100%'}"
+  styleClass="w-full">
+  <div class="flex flex-wrap gap-2">
+    <p-button *ngFor="let color of primaryColors; index as i; first as isFirst" [rounded]="true" [outlined]="false"
+      size="small" [style]="{'background': color.value, 'border': 'none'}" (click)="changePrimaryColor(color.name)" />
+  </div>
+  <p-divider />
+  <p-button [rounded]="true" [text]="true" [plain]="true" [icon]="isDarkMode ? 'pi pi-moon' : 'pi pi-sun'"
+    (click)="toggleDarkMode()" />
+</p-drawer>

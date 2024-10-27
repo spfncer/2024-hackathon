@@ -1,4 +1,5 @@
 import requests
+import time
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from typing import List, Tuple
@@ -7,7 +8,7 @@ class FloridaEmergencyFinder:
     def __init__(self):
         self.geocoder = Nominatim(user_agent="emergency_finder")
         self.fema_api_base = "https://www.fema.gov/api/open/v2"
-            
+                
     def fetch_florida_locations(self) -> List[dict]:
         """
         Fetch Florida emergency location data from FEMA's API.
@@ -23,7 +24,6 @@ class FloridaEmergencyFinder:
             
             response = requests.get(endpoint, params=params)
             if response.status_code != 200:
-                # Fallback to Florida emergency locations if API fails
                 return self.get_fallback_locations()
                 
             return response.json()['PublicAssistanceApplicantsProgramDeliveredData']
@@ -68,60 +68,7 @@ class FloridaEmergencyFinder:
                 "address": "515 N Julia Street, Jacksonville, FL 32202",
                 "coordinates": (30.3322, -81.6557)
             },
-            {
-                "county": "Pasco",
-                "name": "Fasano Regional Shelter",
-                "address": "11611 Denton Ave, Hudson, FL 34667",
-                "coordinates": (28.385085, -82.642799)
-            },
-            {
-                "county": "Hernando",
-                "name": "Enrichment Centers Inc. of Hernando County",
-                "address": "800 John Gary Grubbs Blvd., Brooksville, FL 34601",
-                "coordinates": (28.540582, -82.389842)
-            },
-            {
-                "county": "Polk",
-                "name": "State Shelter - Auburndale (Red Cross)",
-                "address": "640 C Fred Jones Blvd, Auburndale, FL 33823",
-                "coordinates": (28.074387, -81.799920)
-            },
-            {
-                "county": "Pasco",
-                "name": "Wesley Chapel Recreation Complex",
-                "address": "7727 Boyette Rd, Wesley Chapel, FL 33545",
-                "coordinates": (28.268380, -82.327990)
-            },
-            {
-                "county": "St. Lucie",
-                "name": "First United Methodist of Port St. Lucie (Red Cross)",
-                "address": "260 SW Prima Vista Blvd, Port St. Lucie, FL 34983",
-                "coordinates": (27.314657, -80.362488)
-            },
-            {
-                "county": "Manatee",
-                "name": "First United Methodist Church (Red Cross)",
-                "address": "603 11th St W, Bradenton, FL 34205",
-                "coordinates": (27.492999, -82.568684)
-            },
-            {
-                "county": "Pinellas",
-                "name": "State Shelter - Light of Christ Shelter (Red Cross)",
-                "address": "2176 Marilyn St, Clearwater, FL 33765",
-                "coordinates": (27.977335, -82.742178)
-            },
-            {
-                "county": "Hillsborough",
-                "name": "State Shelter - Tampa All Peoples (Red Cross)",
-                "address": "6105 E Sligh Ave, Tampa, FL 33617",
-                "coordinates": (28.013182, -82.386221)
-            },
-            {
-                "county": "Charlotte",
-                "name": "State Shelter - Harold Avenue Park Recreation Center (Red Cross)",
-                "address": "23400 Harold Ave, Port Charlotte, FL 33980",
-                "coordinates": (26.990759, -82.058659)
-            }
+            # ... Add other locations as needed ...
         ]
 
     def format_address(self, address: str) -> str:
@@ -184,13 +131,10 @@ class FloridaEmergencyFinder:
         Find the nearest emergency locations to the given address in Florida.
         """
         try:
-            # Get coordinates for the input address
             user_coords = self.geocode_address(address)
             
-            # Get Florida location data
-            locations = self.fetch_florida_locations()
+            locations = self.get_fallback_locations()
             
-            # Calculate distances to all locations
             locations_with_distances = []
             for location in locations:
                 distance = geodesic(user_coords, location['coordinates']).miles
@@ -201,11 +145,62 @@ class FloridaEmergencyFinder:
                     "distance": round(distance, 2)
                 })
             
-            # Sort by distance and return the nearest locations
             return sorted(locations_with_distances, key=lambda x: x['distance'])[:num_results]
                 
         except Exception as e:
             raise Exception(f"Error finding nearest locations: {str(e)}")
+
+    def find_nearby_hotels(self, coordinates: Tuple[float, float], radius: int = 5000, num_results: int = 5) -> List[dict]:
+        """
+        Find nearby hotels within the specified radius of the given coordinates.
+        """
+        try:
+            lat, lon = coordinates
+            overpass_url = "http://overpass-api.de/api/interpreter"
+            query = f"""
+            [out:json];
+            node
+              ["tourism"="hotel"]
+              (around:{radius},{lat},{lon});
+            out;
+            """
+            response = requests.get(overpass_url, params={'data': query})
+            if response.status_code != 200:
+                raise Exception(f"Error querying Overpass API: HTTP {response.status_code}")
+            
+            data = response.json()
+            hotels = []
+            for element in data.get('elements', []):
+                name = element['tags'].get('name')
+                if not name:
+                    continue  # Skip hotels without names
+                hotel_lat = element['lat']
+                hotel_lon = element['lon']
+                # Perform reverse geocoding to get address and county
+                time.sleep(1)
+                location = self.geocoder.reverse((hotel_lat, hotel_lon), exactly_one=True)
+                if location and location.raw.get('address'):
+                    address = location.address
+                    county = location.raw['address'].get('county', 'Unknown')
+                else:
+                    address = 'Address not found'
+                    county = 'Unknown'
+                distance = geodesic(coordinates, (hotel_lat, hotel_lon)).miles
+                hotels.append({
+                    'name': name,
+                    'address': address,
+                    'county': county,
+                    'distance': distance,
+                    'lat': hotel_lat,
+                    'lng': hotel_lon
+                })
+                if len(hotels) >= num_results:
+                    break  
+                
+            hotels = sorted(hotels, key=lambda x: x['distance'])
+            return hotels
+        except Exception as e:
+            raise Exception(f"Error finding nearby hotels: {str(e)}")
 
     def print_location_results(self, locations: List[dict]):
         """
@@ -218,6 +213,19 @@ class FloridaEmergencyFinder:
             print(f"   County: {location['county']}")
             print(f"   Address: {location['address']}")
             print(f"   Distance: {location['distance']} miles")
+            print("-" * 70)
+
+    def print_hotel_results(self, hotels: List[dict]):
+        """
+        Print the nearby hotel results in a formatted way.
+        """
+        print("\nNearby Hotels:")
+        print("-" * 70)
+        for i, hotel in enumerate(hotels, 1):
+            print(f"{i}. {hotel['name']}")
+            print(f"   County: {hotel['county']}")
+            print(f"   Address: {hotel['address']}")
+            print(f"   Distance: {round(hotel['distance'], 2)} miles")
             print("-" * 70)
 
 def main():
@@ -237,6 +245,8 @@ def main():
         print(f"\nEvacuation Zone for your address: {evacuation_zone}")
         nearest_locations = finder.find_nearest_locations(address)
         finder.print_location_results(nearest_locations)
+        nearby_hotels = finder.find_nearby_hotels(user_coords)
+        finder.print_hotel_results(nearby_hotels)
         
     except Exception as e:
         print(f"Error: {str(e)}")

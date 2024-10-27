@@ -9,3 +9,23 @@ body {
     padding: 0;
     font-family: "Poppins", sans-serif;
 }
+
+.justify-center {
+    justify-content: center;
+}
+.align-center {
+    align-items: center;
+}
+
+html.dark-mode {
+    background-color: var(--p-surface-900);
+}
+
+html.dark-mode .output-card {
+    --p-card-background: var(--p-surface-700);
+}
+
+
+html:not(.dark-mode) .output-card {
+    --p-card-background: var(--p-surface-200);
+}
