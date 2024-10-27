@@ -1,13 +1,22 @@
 <p-menubar>
   <ng-template pTemplate="start">
-    <p-avatar class="p-overlay-badge mr-2" image="Hackathon_Logo_1080x1080.png" size="large" shape="circle" />
-    <span> Evacugator </span>
+    <div class="flex felx-column justify-center align-items-center gap-3">
+      <p-avatar class="p-overlay-badge mr-2" image="Hackathon_Logo_1080x1080.png" size="large" shape="circle" />
+      <span> Evacugator </span>
+    </div>
   </ng-template>
 
   <ng-template pTemplate="end">
-    <div class="flex felx-column justify-center">
-      <img [src]="wifiImagePath()" alt="" style="height: 1rem; width: 1rem; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
-" />
+    <div class="flex felx-column justify-center align-items-center gap-3">
+      @if (internetConnection.isOnline()) {
+      <i class="pi pi-wifi"></i>
+      } @else {
+      <p-overlaybadge badgeSize="small" value="!" severity="danger">
+        <i class="pi pi-wifi"></i>
+      </p-overlaybadge>
+      }
+      <p-button [rounded]="true" [text]="true" [plain]="true" [icon]="isDarkMode ? 'pi pi-moon' : 'pi pi-sun'"
+        (click)="toggleDarkMode()" />
     </div>
   </ng-template>
 </p-menubar>
