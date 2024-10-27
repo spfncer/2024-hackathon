@@ -122,6 +122,7 @@ Our developers learned a variety of skills, including but not limited to:
 To bring Evacugator to a real-world use case, more work needs to be done. User-facing features like identifying shelters, transportation options, and evacuation status (based on realtime hurricane data) remains to be implemented. 
 ### Government Dashboard
 Since the primary audience for Evacugator is governments, work needs to be done to develop a portal where authorities can:
+- Activate/deactivate Evacugator service
 - Update guidance documents leveraged by the LLM
 - Control evacuation notices
 - Add shelter information
