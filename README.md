@@ -73,7 +73,7 @@ The backend is built upon Python (versions 3.10, 3.11, and 3.12 supported) and F
 
 The `ai.py` file is home to the `WatsonXAI` class, which facilitates querying watsonx.ai from Python code. 
 
-The `EvacZoneCall.py` file is home to the `FloridaEmergencyFinder` class, which fetches information from the FEMA API, arcgis API, and overpass API. This class facilitates finding evacuation zones, nearby shelters, and nearby hotels all in a single class.
+The `EvacZoneCall.py` file is home to the `FloridaEmergencyFinder` class, which fetches information from the FEMA API, ArcGIS API, and Overpass API. This class facilitates finding evacuation zones, nearby shelters, and nearby hotels all in a single class.
 
 FastAPI routes within `main.py` transform input from the frontend into usable formats by the `WatsonXAI` and `FloridaEmergencyFinder` classes, and then returns the results to the frontend as JSON data. 
 
