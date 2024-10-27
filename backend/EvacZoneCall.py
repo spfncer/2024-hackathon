@@ -190,7 +190,9 @@ class FloridaEmergencyFinder:
                     'name': name,
                     'address': address,
                     'county': county,
-                    'distance': distance
+                    'distance': distance,
+                    'lat': hotel_lat,
+                    'lng': hotel_lon
                 })
                 if len(hotels) >= num_results:
                     break  

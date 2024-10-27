@@ -88,11 +88,13 @@ def __determine_status(zone:str):
 
 @app.get("/status/{address}")
 async def get_status(address: str):
+    coords = finder.geocode_address(address)
     evac_zone = get_evacuation_zone(address)
     istatus = __determine_status(evac_zone)
     response = {
         "status": istatus,
-        "zone": evac_zone
+        "zone": evac_zone,
+        "coords": coords
     }
     return jsonable_encoder(response)
 
@@ -111,7 +113,7 @@ async def results(json_string: str):
 async def find_hotels(address:str):
     coords = finder.geocode_address(address)
     #coords = (coords[0] + 0.43, coords[1]) # go ~30 miles north, IRL would need to compute based on cone
-    hotels = finder.find_nearby_hotels(coords)
+    hotels = finder.find_nearby_hotels(coords, 5000, 3)
     response = {
         "hotels": hotels
     }

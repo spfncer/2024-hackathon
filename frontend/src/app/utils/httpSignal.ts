@@ -10,7 +10,8 @@ import { catchError, Observable, of, retry, Subscription, timeout } from 'rxjs';
  * @returns the signal
  */
 export function httpSignal<T>(
-  computation: () => Observable<T>
+  computation: () => Observable<T>,
+  timeoutDelay: number = 4000
 ): Signal<T | null> & { recompute: () => void } {
   const sig = signal<T | null>(null);
 
@@ -25,7 +26,7 @@ export function httpSignal<T>(
       subscription.unsubscribe();
     }
     const observable = computation().pipe(
-      timeout(8000),
+      timeout(timeoutDelay),
       retry(4),
       catchError(() => of(null)) // if error 4 times, return null
     );

@@ -17,7 +17,25 @@
     </div>
   </p-card>
   <div class="grid first-level mt-4">
-    <div>hi map</div>
+    <p-card class="output-card flex justify-center align-center"
+      ><google-map
+        [options]="mapOptions"
+        id=""
+        [width]="windowWidthSignal()"
+        [height]="windowWidthSignal()"
+        [center]="center()"
+        [zoom]="zoom"
+      >
+        @for (position of markerPositions; track position) {
+        <map-advanced-marker
+          #marker="mapAdvancedMarker"
+          [position]="position"
+          (mapClick)="openInfoWindow(marker)"
+        />
+        }
+        <map-info-window>Info Window content</map-info-window>
+      </google-map>
+    </p-card>
     <p-card class="output-card">
       <h2 class="text-center">Preparation Guidance</h2>
       <ul>
@@ -38,5 +56,19 @@
         >.
       </p>
     </p-card>
+    @if (hotels()?.hotels){
+    <p-card class="output-card">
+      <h2 class="text-center">Available Hotels</h2>
+      <ol>
+        @for (hotel of hotels().hotels; track hotel.name){
+        <li>
+          <h3>{{ hotel.name }}</h3>
+          <p>{{ hotel.address }}</p>
+          <p>{{ hotel.distance.toFixed(2) }} miles away.</p>
+        </li>
+        }
+      </ol>
+    </p-card>
+    }
   </div>
 </p-card>
